@@ -6,11 +6,11 @@ import LatestRelease from './components/LatestRelease'
 
 function App() {
   return (
-    <div >
-      <MyNavbar/>
-      <MyJumbotron/>
-      <LatestRelease/>
-      <MyFooter/>
+    <div>
+      <MyNavbar storeName = "StriveBooks"/>
+      <MyJumbotron />
+      <LatestRelease />
+      <MyFooter />
     </div>
   );
 }
