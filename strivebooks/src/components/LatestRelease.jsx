@@ -6,7 +6,7 @@ const LatestRelease = () => (
   <Container fluid>
     <Row>
       {books.map((book) => (
-        <Col xs={12} sm={6} md={4} lg={3} xl={2} className="mb-3">
+        <Col xs={12} sm={6} md={4} lg={3} xl={2} className="mb-3" key={book.asin}>
           <Card>
             <Card.Img variant="top" src={book.img} />
             <Card.Body>
