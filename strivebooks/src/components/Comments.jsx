@@ -11,12 +11,17 @@ class Comments extends Component {
         bookComments: [],
         showComments: false,
         showAddComment: false,
+        newComment: {
+            comment: "",
+            rate: "",
+            elementId: ""
+        }
     }
 
 componentDidMount = async() => {
     console.log("i am mounted");
     let asin = this.props.asin 
-    console.log(asin)
+    
 
     try {
         let response = await fetch(
@@ -32,7 +37,7 @@ componentDidMount = async() => {
         );
         if (response.ok) {
             let data = await response.json()
-            console.log(data)
+            /* console.log(data) */
             this.setState({
               bookComments: data,
               
@@ -47,7 +52,41 @@ componentDidMount = async() => {
         }
     }
     
+postComment = async (e) => {
+     e.preventDefault();
+     console.log("I post")    
 
+    this.state.newComment.rate = document.getElementById("ratingValue").value;
+    this.state.newComment.comment =
+      document.getElementById("commentValue").value;
+    this.state.newComment.elementId = this.props.asin; 
+
+    console.log(this.state.newComment);
+    
+    try {
+      let response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/comments/",
+        {
+          method: "POST",
+          body: JSON.stringify(this.state.newComment),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZhNjQ0NTgyZWExZDAwMTViYjAzZWEiLCJpYXQiOjE2NDM3OTk2MjIsImV4cCI6MTY0NTAwOTIyMn0.-64K2XQEdJuZl90T0yseyiP61ilY33mW8lOvLq1gTuM",
+          },
+        }
+      );
+      if (response.ok) {
+        let data = await response.json();
+        console.log(data);
+        this.componentDidMount()
+      } else {
+        // alert('something went wrong :(')
+      }
+    } catch (error) {
+      console.log(error);
+    }
+}
 
 
     render () {
@@ -62,7 +101,7 @@ componentDidMount = async() => {
                   : this.setState({ showComments: true })
               }
             >
-              <i class="bi bi-list mr-2"></i>Show comments
+              <i className="bi bi-list mr-2"></i>Show comments
             </Button>
             {this.state.showComments && (
               <ListGroup>
@@ -84,19 +123,27 @@ componentDidMount = async() => {
                         : this.setState({ showAddComment: true })
                     }
                   >
-                    <i class="bi bi-plus-lg"></i>Add Comment
+                    <i className="bi bi-plus-lg"></i>Add Comment
                   </Button>
                 </ListGroupItem>
                 {this.state.showAddComment && (
                   <ListGroupItem className="px-0">
-                    <Form.Control
-                      as="textarea"
-                      placeholder="Leave a comment here"
-                      style={{ height: "100px" }}
-                    />
-                    <Button variant="link">
-                      <i class="bi bi-envelope mr-2"></i>Send Comment
-                    </Button>
+                    <Form onSubmit={this.postComment}>
+                      <Form.Group className="mb-3" controlId="ratingValue">
+                        <Form.Label>Rating:</Form.Label>
+                        <Form.Control
+                          type="number"
+                          placeholder="add rating from 1-5"
+                        />
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="commentValue">
+                        <Form.Label>Example textarea</Form.Label>
+                        <Form.Control as="textarea" rows={3} />
+                      </Form.Group>
+                      <Button variant="link" type="submit">
+                        <i className="bi bi-envelope mr-2"></i>Send Comment
+                      </Button>
+                    </Form>
                   </ListGroupItem>
                 )}
               </ListGroup>
