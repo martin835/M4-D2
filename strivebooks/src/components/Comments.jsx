@@ -21,9 +21,11 @@ class Comments extends Component {
         isLoading: true
     }
 
-componentDidMount = async() => {
+loadComments = async() => {
     console.log("i am mounted");
     let asin = this.props.asin 
+    
+    
     
 
     try {
@@ -54,6 +56,12 @@ componentDidMount = async() => {
         console.log(error)
         }
     }
+
+showComments = () => {
+this.state.showComments
+  ? this.setState({ showComments: false })
+  : this.setState({ showComments: true });
+}
     
 postComment = async (e) => {
      e.preventDefault();
@@ -82,7 +90,8 @@ postComment = async (e) => {
       if (response.ok) {
         let data = await response.json();
         console.log(data);
-        this.componentDidMount()
+        this.loadComments();
+        this.setState({ showAddComment: false });
       } else {
         // alert('something went wrong :(')
       }
@@ -111,7 +120,7 @@ deleteComment = async (e) => {
       if (response.ok) {
         let data = await response.json();
         console.log(data);
-        this.componentDidMount();
+        this.loadComments();
       } else {
         // alert('something went wrong :(')
       }
@@ -127,11 +136,8 @@ deleteComment = async (e) => {
             <Button
               variant="link"
               className="mb-2"
-              onClick={() =>
-                this.state.showComments
-                  ? this.setState({ showComments: false })
-                  : this.setState({ showComments: true })
-              }
+              onClick={() => {this.showComments();
+              this.loadComments();}}
             >
               <i className="bi bi-list mr-2"></i>Show comments
             </Button>
@@ -144,14 +150,14 @@ deleteComment = async (e) => {
                   <ListGroup.Item>No Comments for this book :( </ListGroup.Item>
                 ) : (
                   this.state.bookComments.map((comment) => (
-                    <ListGroup.Item>
+                    <ListGroup.Item key={comment._id}>
                       <i>"{comment.comment}"</i>
                       <Button
                         variant="link"
                         id={comment._id}
                         onClick={this.deleteComment}
                       >
-                        <i class="bi bi-trash3"></i>Delete
+                        <i className="bi bi-trash3"></i>Delete
                       </Button>
                     </ListGroup.Item>
                   ))
