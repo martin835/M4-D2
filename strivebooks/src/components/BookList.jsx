@@ -16,7 +16,7 @@ class BookList extends Component {
         <h1 id="Latest">
           Latest Releases <MyBadge content="New" color="grey" />
         </h1>
-        <Form className="d-flex">
+        <Form className="d-flex mb-3">
           <FormControl
             type="search"
             placeholder="Search"

@@ -3,7 +3,9 @@ import {
   ListGroup,
   Button,
   ListGroupItem,
-  Form} from "react-bootstrap";
+  Form,
+  Spinner,
+} from "react-bootstrap";
 
 class Comments extends Component {
 
@@ -15,7 +17,8 @@ class Comments extends Component {
             comment: "",
             rate: "",
             elementId: ""
-        }
+        },
+        isLoading: true
     }
 
 componentDidMount = async() => {
@@ -40,7 +43,7 @@ componentDidMount = async() => {
             /* console.log(data) */
             this.setState({
               bookComments: data,
-              
+              isLoading: false
             });
            
         } else {
@@ -134,14 +137,21 @@ deleteComment = async (e) => {
             </Button>
             {this.state.showComments && (
               <ListGroup>
+                {this.state.isLoading && (
+                  <Spinner animation="border" variant="primary" />
+                )}
                 {this.state.bookComments == 0 ? (
                   <ListGroup.Item>No Comments for this book :( </ListGroup.Item>
                 ) : (
                   this.state.bookComments.map((comment) => (
                     <ListGroup.Item>
                       <i>"{comment.comment}"</i>
-                      <Button variant="link" id={comment._id} onClick={this.deleteComment}>
-                         <i class="bi bi-trash3"></i>Delete
+                      <Button
+                        variant="link"
+                        id={comment._id}
+                        onClick={this.deleteComment}
+                      >
+                        <i class="bi bi-trash3"></i>Delete
                       </Button>
                     </ListGroup.Item>
                   ))
