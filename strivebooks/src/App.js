@@ -14,7 +14,7 @@ function App() {
     <div>
       <MyNavbar storeName="StriveBooks" />
       <MyJumbotron />
-      <BookList books={scifi} />
+      <BookList books={horror} />
       <MyFooter />
     </div>
   );

@@ -30,7 +30,7 @@ class BookList extends Component {
             }
           />
         </Form>
-        <WarningSing content="This is some different alert" />
+        
         <Row>
           {this.props.books
             .filter(
@@ -43,6 +43,7 @@ class BookList extends Component {
               <SingleBookClass
                 title={book.title}
                 img={book.img}
+                price = {book.price}
                 key={book.asin}
                 
               />
