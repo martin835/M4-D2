@@ -88,6 +88,35 @@ postComment = async (e) => {
     }
 }
 
+deleteComment = async (e) => {
+    e.preventDefault();
+    console.log("I DELETE")
+    console.log(e.target.id)
+
+    try {
+      let response = await fetch(
+        "https://striveschool-api.herokuapp.com/api/comments/" + e.target.id,
+        {
+          method: "DELETE",
+          headers: {
+            
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWZhNjQ0NTgyZWExZDAwMTViYjAzZWEiLCJpYXQiOjE2NDM3OTk2MjIsImV4cCI6MTY0NTAwOTIyMn0.-64K2XQEdJuZl90T0yseyiP61ilY33mW8lOvLq1gTuM",
+          },
+        }
+      );
+      if (response.ok) {
+        let data = await response.json();
+        console.log(data);
+        this.componentDidMount();
+      } else {
+        // alert('something went wrong :(')
+      }
+    } catch (error) {
+      console.log(error);
+    }
+}
+
 
     render () {
         return (
@@ -111,6 +140,9 @@ postComment = async (e) => {
                   this.state.bookComments.map((comment) => (
                     <ListGroup.Item>
                       <i>"{comment.comment}"</i>
+                      <Button variant="link" id={comment._id} onClick={this.deleteComment}>
+                         <i class="bi bi-trash3"></i>Delete
+                      </Button>
                     </ListGroup.Item>
                   ))
                 )}
