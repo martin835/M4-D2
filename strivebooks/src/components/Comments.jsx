@@ -1,11 +1,16 @@
 import { Component } from "react";
-import {ListGroup, Button } from "react-bootstrap";
+import {
+  ListGroup,
+  Button,
+  ListGroupItem,
+  Form} from "react-bootstrap";
 
 class Comments extends Component {
 
     state = {
         bookComments: [],
-        showComments: false
+        showComments: false,
+        showAddComment: false,
     }
 
 componentDidMount = async() => {
@@ -49,11 +54,15 @@ componentDidMount = async() => {
         return (
           <div>
             <Button
-              variant="primary"
+              variant="link"
               className="mb-2"
-              onClick={() => this.state.showComments ? this.setState({ showComments: false }) : this.setState({ showComments: true })}
+              onClick={() =>
+                this.state.showComments
+                  ? this.setState({ showComments: false })
+                  : this.setState({ showComments: true })
+              }
             >
-              Show comments
+              <i class="bi bi-list mr-2"></i>Show comments
             </Button>
             {this.state.showComments && (
               <ListGroup>
@@ -65,6 +74,30 @@ componentDidMount = async() => {
                       <i>"{comment.comment}"</i>
                     </ListGroup.Item>
                   ))
+                )}
+                <ListGroupItem>
+                  <Button
+                    variant="link"
+                    onClick={() =>
+                      this.state.showAddComment
+                        ? this.setState({ showAddComment: false })
+                        : this.setState({ showAddComment: true })
+                    }
+                  >
+                    <i class="bi bi-plus-lg"></i>Add Comment
+                  </Button>
+                </ListGroupItem>
+                {this.state.showAddComment && (
+                  <ListGroupItem className="px-0">
+                    <Form.Control
+                      as="textarea"
+                      placeholder="Leave a comment here"
+                      style={{ height: "100px" }}
+                    />
+                    <Button variant="link">
+                      <i class="bi bi-envelope mr-2"></i>Send Comment
+                    </Button>
+                  </ListGroupItem>
                 )}
               </ListGroup>
             )}
